@@ -1,0 +1,161 @@
+######################
+# We defined three kinds of style configuration for different environment.
+# in development environment we need quickly verify the modified configuration.
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: development
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:${CONFIG_HOME}
+          clone-on-start: false
+          search-paths: '{application}'
+      allow-override: true
+
+################### Development Profile Configuration ##########################
+---
+spring:
+  profiles: development
+
+
+################## Test Environment Profile Configuration #########################################
+# Git SSH configuration using properties, the private-public key pair generate
+# from cloud-test server , and we use this pair in the spring cloud infrastructure
+# project, the public key as a deploy key enabled in the config-data project under
+# config-data-> settings -> repository -> deploy keys using title "cloud-test-server-public-key"
+####################################################################################################
+---
+spring:
+  profiles: test
+  cloud:
+      config:
+        server:
+          git:
+            uri: ssh://git@git.91topbaby.com:10022/topbaby/config-data.git
+            ignore-local-ssh-settings: true
+            host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDxhX6Zk4BWc4ER5KiFxKn0rbMoLZzg63WzwzQQULTTbT7tbDz9U8Ygf3BBGTdofEIRL9IARzKTdUVmvjFN0Y54=
+            host-key-algorithm: ecdsa-sha2-nistp256
+            private-key: |
+                            -----BEGIN RSA PRIVATE KEY-----
+                            MIIJKQIBAAKCAgEAoK9ubMFJPWi2i4wd9SdKwtNX5SQn9RXMm+V3gXoOFUr/k1FT
+                            W4l5MCzyttO7TzW+dQdJ+WqtTBk3d7+mR6HhsVISIbbQ5ToHcFeJUq+P+TROkyDp
+                            zJsA4xDe8mJDYlCQoOtpQrX5Uj/gYkWwDQWtbKIld8il9V8AIenkDKz0WSs+h1D4
+                            a5aWK6S4EdQ0dVxtwaqnpTybGQT2yNUkua6llD3RugOA2sZ3JrsKLhbQDHk/dbAo
+                            0zNK49NMzC4GrfPIsy9PIX9eiPZkC9w3Tg+HL4Du5zgq0m2xEwcozV8Mc1zCQ4T7
+                            sm/LuIiMlBohL5BOGqprBzXEy/uz7uF0cLeBkNwNv2fzo4JTqs5Gv44+vQK0iSta
+                            8EUSr9vug5w0Gb2IlwWmLJgXkRx1Exh+8XckpVprh5v59kzbwg1Naw26G1zyRgmQ
+                            e8gNPfHNCDkWx0mGoNyoAiJhKo3UL+jmqfVm58/xIPeRAYMZgFwsttxAwMQtOwtn
+                            7iur26JFS5NyG0MelE6hh3sWZOF0dGIkKP12syiGl7jahBTmlRxCYzfIVzdp+rOT
+                            9re8QF1SSJOxjKNL95mDDtT7uhOhTpRD7dEO1M/w+OqvV2WvZLmXjcfOfgxXxB9V
+                            k0lLnf1hz9DgJYSHvhKdoSFrfNT9+iDzQRhh9Ya6841jqDDE28UJuC9iwV0CAwEA
+                            AQKCAgBakMZCUea/z+cjXAP+ivjeOlRN+ET1JCZAr+LdfTe21KCcHbhH3YIKnyrl
+                            1Qy7pmUEfOk6xN+MBqJ2wfQsZ5dXZBSIIAw5Rq2uqgfiLMWPBeZLkr9z7OFhGb8v
+                            CidEoHgD2utnCD3QF+SWPwTtMgf/NJy9mL/BPpxKgRNh+ZF3OKJzjjWWHjfhvWNp
+                            2RsAEuphv5fhz/jy7xNROqEKbt8wYG920kasCDRcBgvE0mLMxQH5iSJZd418PzoH
+                            0uE85ix2ofGNxcY4l/bnoGUjgCkHozoD5GpuVBj7yos6xZm049EyUR+0AMLn7T6e
+                            suOFdWYwLWFJnQqgletidnw0k5lYcaZeuNal86OLCYsvBYw/hqvRmV1ZKNr3al15
+                            aMYXdON+FahShr7iD8d+O672zy1V8ZTG4mBMTWiWLLcIAhOR/yUbKHA7xJWW19kC
+                            sQKHn6Sjpclzg/Qzc4EdanZnNMBV+JqrJylo4e8UdJeJieFEkcUJBR4DIZtoBbR/
+                            TnHHyzkjuz6kkOOlpHGDmJYpTL/3ibDd53yt82Wo9gyEiBnEVlpY3wizkN9KvUiv
+                            PKgbS4vs3tUP14ivNyf31Eo0ziD4iskbKQfHgj6UL6YEd0Df+szpoZTWpRS1uBpF
+                            4AeiIJY0Wwd2Y+dSJK/UuaJSohngbxUrI1YylA/qiJdCwbB0wQKCAQEAzhaPmiyI
+                            IAkBs24ZxRCSvdbS2XdhQk1hg/Jca5Bhow/MleaEEypniLYsrEf6orQUkMCm6Zjw
+                            tcSi0ouzyefPGSkKtrzqqDfs8zVgdjvpC0FtM/mWSJnZbGxD3WM1Bo0+/x5XTYhd
+                            o4sRTjj2fip0V/V447/uIk3Kyac8aOeNhnUk7xMKLjR1eZNU5+AFUGPM2ClqNnnJ
+                            zi0Zgu5n16D+1yJQwha75NVSk1PZxoqLjzfRXDvJ8mrqgO/ppSWRhrriBNLwV/OL
+                            r8g6HGu3kWE1D3cgXaaGwZg93Mcyc5zJhaJhv5W5C6ASyQs6jN5RAlD6/alsu1th
+                            CEGoSJCO6Cz/OQKCAQEAx5nmMXUAncJVElH4Nmkb2N19EMNXhgi8/MJXFAij1Oye
+                            9dLsg6Q0vptxgqXAk5/WgKgBWHCxqdofUUlT2H+Icc+enQ6AsX1iwSIqSmhfERhk
+                            1cOFzX/oqWSWydraY1PzWqArODPqAD20SvRqde+4Vnj4IPtfas6XrcwHha8eFEHf
+                            VxzUfVps/IR2IuNAVZ2Xa0sQbSN+TIVrDQQf028g7lZVj7rkvFgbbfXc8ip70hBZ
+                            Op4XEfBrVLZAr4KKauq150kSjVziovfaKapjMtPcv754GssWm43gMq3I4s3UjsWA
+                            WsRBN1ciKcN46x88GOsNEytD3jT7APalUtmVVRqvRQKCAQBRH+RrZjg3lBQNU7vl
+                            LP72p8fcPvgUJ23JiPAEj5M/owp/v3wiJ0EWOdAgCT2KKqUlzhBmSAQJKVyG0ON3
+                            CT8mwlcrU/ZzPYCSxGIyaKb1/U1FdmxIK/fAjGWykkjfSV6RApqPNKzXofiv+BBf
+                            3cpqjYCG9piA/GplMuW+zdeSJC7jxXTud0v/DZYQqMiuunp6ZOMgipR8CpjOR5as
+                            9P0cJq/vlw9jpu2YfRtu4j7Jo8lQK2D1gkzJcKdikQVWKd6q03Y0yPQlwAXQBj7+
+                            hWtjqRseglztfEZt0CP2CrPxXNhpmEB9aQe8CCWGKkVtSf9jNvxMTE5H98CMwArh
+                            LkVRAoIBAQCrtl4uFfXdwhzlkdbzGCF4w7KgBSz6hfHvkFDRT02CE738xOPrrAwk
+                            Hh3cwzOUzGEAdYgSyYBOGvPuPiL/kVeUcYSGoL9d8fxPIlE3ieqfDllQ/M/TJkLF
+                            119RcBGIeeRVBo2n4CFi67J6+SHNK9ltqsvrs9U2UVxzi569BxXdX33/tzGmVXCF
+                            HH91LANgpB5rkzwiZ/JzaiPaIr4uat/tqiAZcjLtRO7z/huBycKTyLS6lN5L9ISh
+                            b9jeJHNn31t2CYsISew/PvJT/d0xEMpLulQg2K4uTDOf5Zl4ZJKD8KynaUahkTg2
+                            rY8M1uYgmbW50/Ki6vk0rvsy9zRc7oPxAoIBAQCnZFH2DmZB+8GKs/BZPcW99Ycv
+                            LAApcCrttG8xIFz4hhGAFfVmc54oxvtAzOC60O+cSfhN8b44ikc0x6lbi/GnC7+n
+                            8i33FvxGAKvyPKyD3sa7PpoyJUaD1vESxyEgvjSZab2tbdckms7rnxWjh0cD/g4o
+                            WEvDU5yoDec82mXas9qmd2ck85g3uyVwR3BR74wkKPyC8aNP6kHUSsqNm5e0c7I/
+                            n6vigyAyapMRN2KyUu5eJuLeF/p7FzM0KXE60kPWMmVLH0LuqFaoue63hc+Kmiw4
+                            9HgxQELBBZ8UZW09mzclHqJY9fbUw/epYSi/sr8JV71gvJu1VIx1vHw629lM
+                            -----END RSA PRIVATE KEY-----
+################### Production Profile Configuration ##########################
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      server:
+        git:
+          uri: ssh://git@git.91topbaby.com:10022/topbaby/config-data.git
+          ignore-local-ssh-settings: true
+          host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDxhX6Zk4BWc4ER5KiFxKn0rbMoLZzg63WzwzQQULTTbT7tbDz9U8Ygf3BBGTdofEIRL9IARzKTdUVmvjFN0Y54=
+          host-key-algorithm: ecdsa-sha2-nistp256
+          private-key: |
+                          -----BEGIN RSA PRIVATE KEY-----
+                          MIIJKAIBAAKCAgEAy/NgtvYYUboB8pmqVovNnQVMxmI3XDqgDN33jiPoMCIe/iAD
+                          ntTSaZbeCvtCqvpTL/ef+K4qc7QropvT+iITPg2DL5FWb58WrxMV5DSDVMMddzk3
+                          YPIFvxvnGf2rdGteUOPcwRhwBDdT2qoaupy6B9h24/tagXFphmOuXfMIt63pxm2p
+                          Ay2BLiN+xjOE5SDSvQt+umK0K6MzUzGuWMs1tbqxtfdAVw1qkGxm4I/mbx7mi8pq
+                          J6qE+qPdct/h2H2KjXfpZ4gCtbXQGG1EAQduPu5/MB20rT6VZOWutxGGrIE9x+79
+                          1HmcWDiwHoAkeLT36b/xJv6IWHhYlIhEQdxdeYVILrptvW5yGMUIy0elqTnc9uLY
+                          wOPQ2FX7ImfqvtKzmgSo0HC8QLOcb+2lkL18Lynua9GDHr3sEAtq9jltmKZKg1h0
+                          pPTsQMhpUYTpMO2jpVmu34YP8MN2oaCq7e1tzhs/jBowjlilm1v5fE135vJyRALW
+                          s7MQ1m1mhewXAdONtAi2Zom1St3FJBuedrITfD73Ccw4gzlsgBqlfvKkOIFrmB+Q
+                          qKWh2d+U/HhpLv14Q0Tl+RPOpLN5JG3RAEmd1siag1k10bAZkxB9hKNp4D0XB7PK
+                          K/FN69aZ4IFHNrEj24RoyH/Q+SDK5GDl7C1mrqg341J5hEXwjDeR0thCX30CAwEA
+                          AQKCAgEAhh1NBANgip2emkGiWbclRpQtoGcFsIh8pvlvyPCjxsMpTkMPHmsk0np7
+                          GQ2REY37FhfoAkfFcsCP0SZXhqzRqoSIN8eC53PeHtKWGrLNifekcLoXSJDeZoWa
+                          uuSs0qmoI9kzWWcQgjU/1xL08LIPQwl9ZP3sziIeGlmCWBVxLhgXGn0SHxzVTdnZ
+                          i8xlH6ct7VKZy0cM44U2Qwbwd0Np1k8mfVpR3OzdnosqO5FlHr1bLaG1nM/tEkSf
+                          YuMGSK6FZfHsckBmR8d/SBDSHzsbrBZ5XNKr9SCqbOb8tTW5McbrMYZfNFGkFf9x
+                          ER2C3j1iqTunANVwI31AAqx49jZK4GidiH/D7QMs1vbOVpetZBsWqv8Ttg5NcdOA
+                          fJmeIflwogyP6fL0x+ENWIfbbgc4mBev7wkQvZt0gbH6e2ZoexYlwYcFYL+LYqFe
+                          5zgwlF36lugZUZ+X7EdKgfLLYvn9PJu1Y5oF6+SLJr9APmrHEdor0kJIyGDAM00e
+                          n8y/zjI2h95b9z19Uyz95y0D0ChYcQFxmtdoys4s/LKXiw8OOOxfAP6pHo0oDze5
+                          yR8fYu3ctxrXeSubI+JZkFdmmqKdU/xOpVVbiUMgmqH11f433l6Yspc/mvuv34UM
+                          HkjlURM2UfGY6GmtVnCXkF5Hl5brDTTOn8GJqNXDGgLKLpolEgECggEBAPof+Fuj
+                          y+MLt+lN7C0xTyeG4Mr1hmMo2kkpNJfQd1AALro815hpKiRXKkkd9WhRUzuCI0+7
+                          q0pMVATl48NuPiQKAMDj0E/XMDvrG56BfJT3FHHuqedE19CmeZT0M00T+A5bao6E
+                          PtZNtIOnv9cOpq6bg2VaIYtug6T3uCnn5a/FUTbucpCaISZCdT1JOa6coFS4dItu
+                          g+FxBBFszL5LbRVMdFpkGQCs1TMHqPqjtHBMqTl53ktBSWPJdN2tWkXhHfW4QV0W
+                          jXHCAR1M6tvvieWkkOZY58CXNCMan+H0OZyRci1U1zL5LfnizEFmRHvR0uh9zFKi
+                          FTxTW/IkSMhJDxECggEBANC9wcSN5SWMtzs3obeJttTTmk/4lTWxiyL/vUfXZRJY
+                          A5E3tPeBpIUqOQS85Cr56mx/iYLHRM7ORncrUajeys+czKZyUrDkAlvqpt1gjJRF
+                          y3vT02Mk8C3v/Rog9BiIRfVnS5sbzyNaWnOIEUViMLfOUJHrtWgqToWbEJoHyrkR
+                          dlJmW4OzOpLFC9nxdZZZxIXpENnuJfwr5GV7z5TO+0LrsHLajhYdYsS8FSMk8BbX
+                          1ruL65+cO+oNYgBwhtVC1jrkuBms7/Kg9QSIU4SUcm+kKjKadFub5W94xQkubr/Y
+                          GGk22/KQmu38wrEO5gDtXfWkM+RFPhfxNV5aGDjSIa0CggEAT49Hwm5xdgDOOQmu
+                          LBnZIauHaUd7vaLK/CZ9MiT/LpVAR8D+mt4op3KKYsOCwfHMVctpS/1X2MQ6nWw6
+                          bHlujqwX3UMZiavbDdQU7vAlHoURHcRaitOdCiNJ3RVoFAZcCsUNOdPa4PPKjW4Y
+                          WWGxpyyUOPLYZK98dEbPb5TxvF05Hg3upww/qxnMjPfzvxTW8tvRRmCa1mTKdHh1
+                          D7qSMgoloHLieRKApkCzgTX9ORNJaJzZFnrnyzPTVofDhSK8EuLO97sqtpqNHDLR
+                          KbAh3sffx0VUQjBWRyw62vaCNMkW1lB8OxyDgU6gxdSvx+rP+V+6VDZ2JsAlKPpd
+                          pEeI4QKCAQAzyH9DRXgtIoVqGVjy8ST8Eypa4G4TjeHYYt0P721Raago5Erug6jO
+                          qDTQ6hMoXis7k0AHw2tcamussIBnhi2F534VZJMC8u1q5AFVNdhqCA58v4XXOJik
+                          rL57NuWXGGdSg7eL2RA/0vBRbNXsAnnXf0UZjgHIv4YPOvKZY4l089IIiv/04geL
+                          1XolLPNgwxAvsCvQBHZD4pecXWSXo+lNJq71LybEcbHI4GfV+hndcNoCWKmxRM7Q
+                          N1WyijfIu/XtUkQhindUF33xC+i8IR9qdq1JNGvdNgVq6+jlaDFtQix8HXHe8OSe
+                          WW/rAKkqXbhLcdq1rD/FLL9ykqMjpW1ZAoIBACeIKyDOQRNBvTVG7x6DMMOBGJnd
+                          NywbP8wBP4NMuog/TxN3szTvIJSC8p5TgCtIKT/WnLbG3gvVdw7P6ZU5NDxVNDKT
+                          uG4AmjeViSTCAg8UPHh4hjjmrbaGw2jiRvLao0zqME2oM0KN+7NAl/HJtMaMieEY
+                          FdFOKCPm71TbLw22I3lhv7YOT4Fa5va58PJnySQE70gau6vH6uAejdXIKKBI0rhE
+                          FEKghC2e7amq211xkOBF0Kt5nWVYUrEFSEi90wA7AAHxXBDyAml5qFJZ4djBKwoT
+                          Ck3EIzGIEs+KzifxLhUld4FuQ1A5NKnvQ4dYM/Eljo1NfjfMYjArMrhLXO4=
+                          -----END RSA PRIVATE KEY-----
+logging:
+  level:
+    root: info
+  path: ${logPath:/var/log/${spring.application.name}}

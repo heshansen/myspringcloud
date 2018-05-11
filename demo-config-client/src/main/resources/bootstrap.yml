@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: demo-config-client
+  profiles:
+    active: development
+  cloud:
+    config:
+      uri: http://localhost:8080
+      fail-fast: true
+# Client retry to connect to config sever properties of default values, you can change these properties as you wish.
+      retry:
+        initial-interval: 1000
+        max-attempts: 6
+        max-interval: 2000
+        multiplier: 1.1
+      username: config-user
+      password: topbaby
+
+################### Development Profile Configuration ##########################
+---
+spring:
+  profiles: development
+logging:
+  level: debug
+
+
+################### Production Profile Configuration ##########################
+---
+spring:
+  profiles: production

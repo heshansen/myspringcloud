@@ -1,0 +1,16 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/classes
+target/generated-test-sources
+target/maven-archiver
+target/generated-sources
+target/maven-status
+target/auth-service-0.0.1-SNAPSHOT.jar.original

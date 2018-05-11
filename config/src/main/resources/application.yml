@@ -1,0 +1,16 @@
+server:
+  port: ${appPort:8080}
+
+#encrypt:
+#  key-store:
+#    location: classpath:/config-server.jks
+#    password: 61-topbaby
+#    alias: config-server-key
+#    secret: 61-topbaby-2015-0108
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: config-user
+    password: topbaby

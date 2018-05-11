@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: turbine
+server:
+  port: 8890
+
+# 服务注册
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8889/eureka/
+
+# 日志 （优先级大于logback.xml）
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: INFO
+    com:
+      topbaby: INFO
+  file: logs/${spring.application.name}.log
+
+# 监控配置 - 服务名称
+turbine:
+  appConfig: order,account
+  aggregator:
+    clusterConfig: default
+  clusterNameExpression: "'default'"

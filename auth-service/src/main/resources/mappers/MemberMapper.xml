@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.topbaby.cloud.authservice.mappers.MemberDao">
+
+    <resultMap id="MemberMap" type="MemberDO">
+        <result property="memberSeq" column="memberSeq" javaType="Long" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="selectWhere">
+        <where>
+            <if test="status != null">
+                AND A.status = #{status}
+            </if>
+            <if test="credential != null">
+                AND B.credential = #{credential}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="pageLimit">
+        <if test="start !=null and limit != null">
+            LIMIT #{start},#{limit}
+        </if>
+    </sql>
+
+    <sql id="createTimeDesc">
+            ORDER BY A.createTime ASC
+    </sql>
+
+    <select id="selectList" resultMap="MemberMap"
+            parameterType="HashMap">
+        SELECT A.memberSeq,
+        A.grade,
+        A.name,
+        A.nickName,
+        A.gender,
+        A.birthday,
+        A.portraitId,
+        A.city,
+        A.welcomeMsg,
+        A.idType,
+        A.idNo,
+        A.mobile
+        FROM emall_members AS A
+        <include refid="selectWhere"/>
+        <include refid="createTimeDesc"/>
+        <include refid="pageLimit"/>
+    </select>
+
+    <select id="selectCount" resultType="Integer" parameterType="HashMap">
+        SELECT COUNT(A.memberSeq)
+        FROM emall_members AS A
+        <include refid="selectWhere"/>
+    </select>
+
+    <select id="selectById" resultMap="MemberMap"
+            parameterType="Long">
+            SELECT A.memberSeq,
+            A.grade,
+            A.name,
+            A.nickName,
+            A.gender,
+            A.birthday,
+            A.portraitId,
+            A.city,
+            A.welcomeMsg,
+            A.idType,
+            A.idNo,
+            A.mobile
+            FROM emall_members
+            WHERE memberSeq = #{id}
+        </select>
+
+    <select id="selectOne" resultMap="MemberMap" parameterType="HashMap">
+        SELECT A.memberSeq,
+        A.grade,
+        A.name,
+        A.nickName,
+        A.gender,
+        A.birthday,
+        A.portraitId,
+        A.city,
+        A.welcomeMsg,
+        A.idType,
+        A.idNo,
+        A.mobile
+        FROM emall_members AS A
+        <include refid="selectWhere"/>
+        LIMIT 1
+    </select>
+
+    <select id="selectMemberByCredential" resultMap="MemberMap" parameterType="HashMap">
+        SELECT A.memberSeq, A.password, A.mobile
+        FROM emall_members AS A
+        INNER JOIN emall_members_credentials AS B ON B.memberSeq = A.memberSeq
+        <include refid="selectWhere"/>
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="MemberDO">
+        <![CDATA[
+        INSERT INTO emall_members
+                   (
+                     grade,
+                     password,
+                     name,
+                     status,
+                     nickName,
+                     gender,
+                     birthday,
+                     portraitId,
+                     city,
+                     welcomeMsg,
+                     idType,
+                     idNo,
+                     idVerified,
+                     mobile
+             VALUES(
+                     #{grade},
+                     #{password},
+                     #{name},
+                     #{status},
+                     #{nickName},
+                     #{gender},
+                     #{birthday},
+                     #{portraitId},
+                     #{city},
+                     #{welcomeMsg},
+                     #{idType},
+                     #{idNo},
+                     #{idVerified},
+                     #{mobile})
+    ]]>
+        <selectKey resultType="_long" keyProperty="memberSeq" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="MemberDO">
+        UPDATE emall_members
+        <set>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </set>
+        WHERE memberSeq =#{memberSeq, javaType=LONG, jdbcType=BIGINT}
+    </update>
+
+    <update id="batchDelete" parameterType="HashMap">
+        UPDATE emall_members
+        SET status = #{status}
+        WHERE memberSeq ${inKey}
+        <foreach collection="memberSeqList" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+            DELETE FROM emall_members
+            WHERE memberSeq =#{memberSeq, javaType=LONG, jdbcType=BIGINT}
+    </delete>
+</mapper>

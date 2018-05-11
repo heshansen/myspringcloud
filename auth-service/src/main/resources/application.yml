@@ -1,0 +1,4 @@
+#指定bean所在包
+mybatis:
+  type-aliases-package: com.topbaby.cloud.authservice.entity
+  mapperLocations: classpath:mappers/*.xml

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.topbaby.cloud.authservice.mappers.UserDao">
+
+    <resultMap id="userMap" type="com.topbaby.cloud.authservice.entity.BaseUserDetails">
+        <result column="userseq" property="userSeq"/>
+        <result column="loginid" property="username"/>
+        <result column="password" property="password"/>
+        <result column="status" property="status"/>
+        <result column="loginSuccessCount" property="loginSuccessCount"/>
+        <result column="lastLoginFailureTime" property="lastLoginFailureTime"/>
+        <result column="lastLoginSuccessTime" property="lastLoginSuccessTime"/>
+        <result column="lastLoginIp" property="lastLoginIp"/>
+        <result column="createDate" property="createDate"/>
+        <result column="lastUpdateDate" property="lastUpdateDate"/>
+        <result column="firstLogin" property="firstLogin"/>
+        <result column="loginFailureCount" property="loginFailureCount"/>
+        <result column="createUser" property="createUser"/>
+        <result column="lastUpdateUser" property="lastUpdateUser"/>
+        <!--<result column="isEnabled" property="enabled"/>-->
+        <!--<result column="isAccountNonExpired" property="isAccountNonExpired"/>-->
+        <!--<result column="isAccountNonLocked" property="isAccountNonLocked"/>-->
+        <!--<result column="isCredentialsNonExpired" property="isCredentialsNonExpired"/>-->
+    </resultMap>
+
+    <sql id="userColumns">
+        ${alias}.userseq,
+        ${alias}.loginid,
+        ${alias}.password,
+        ${alias}.status,
+        ${alias}.loginSuccessCount,
+        ${alias}.lastLoginFailureTime,
+        ${alias}.lastLoginSuccessTime,
+        ${alias}.lastLoginIp,
+        ${alias}.createDate,
+        ${alias}.lastUpdateDate,
+        ${alias}.firstLogin,
+        ${alias}.loginFailureCount,
+        ${alias}.createUser,
+        ${alias}.lastUpdateUser
+    </sql>
+
+    <sql id="selectWhere">
+        <where>
+            <if test="loginid != null">
+                AND users.loginid = #{loginid}
+            </if>
+            <if test="appid != null">
+                AND users.appid = #{appid}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getUserByName" resultMap="userMap" parameterType="HashMap">
+        SELECT
+          <include refid="userColumns"><property name="alias" value="users"/></include>
+        FROM core_users AS users
+        <include refid="selectWhere" />
+    </select>
+
+    <select id="selectById" resultType="com.topbaby.cloud.authservice.entity.BaseUserDetails" resultMap="userMap" parameterType="java.lang.Long">
+        SELECT
+          <include refid="userColumns"><property name="alias" value="users"/></include>
+        FROM core_users AS users
+    </select>
+
+    <update id="update" parameterType="com.topbaby.cloud.authservice.entity.BaseUserDetails">
+        UPDATE  core_users
+        <set>
+            <if test="password != null">
+                password=#{password},
+            </if>
+            <if test="firstLogin != null">
+                firstLogin=#{firstLogin},
+            </if>
+        </set>
+        WHERE userSeq =#{userSeq,jdbcType=BIGINT,javaType=Long}
+    </update>
+</mapper>

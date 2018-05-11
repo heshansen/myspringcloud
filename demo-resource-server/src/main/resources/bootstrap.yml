@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: demo-resource-server
+  profiles:
+    active: development
+  cloud:
+    config:
+      uri: http://localhost:8080
+      fail-fast: true
+      username: config-user
+      password: topbaby
+
+################### Development Profile Configuration ##########################
+---
+spring:
+  profiles: development
+logging:
+  level: debug
+
+
+################### Production Profile Configuration ##########################
+---
+spring:
+  profiles: production
